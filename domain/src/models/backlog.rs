@@ -1,5 +1,6 @@
 use super::Item;
 
+#[derive(Debug, Clone)]
 pub struct Backlog {
     items: Vec<Box<dyn Item>>,
 }

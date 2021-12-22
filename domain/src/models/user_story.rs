@@ -2,6 +2,7 @@ use common::uuid::Uuid;
 
 use super::{Assingable, Entity, Estimatable, HasTitle, Item, StoryPoint};
 
+#[derive(Debug, Clone)]
 pub struct UserStory {
     id: Uuid,
     title: String,

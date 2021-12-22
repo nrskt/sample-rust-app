@@ -1,6 +1,15 @@
+use std::fmt::Debug;
+
+use dyn_clone::DynClone;
+
 use crate::{DomainError, DomainResult};
 
-pub trait Item: HasTitle + Estimatable + Assingable + Send {}
+pub trait Item:
+    'static + Send + Sync + Debug + HasTitle + Estimatable + Assingable + DynClone
+{
+}
+
+dyn_clone::clone_trait_object!(Item);
 
 pub trait Estimatable {
     fn point(&self) -> Option<StoryPoint>;
