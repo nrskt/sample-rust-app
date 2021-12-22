@@ -1,0 +1,13 @@
+[package]
+name = "adaptor"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ports = { path = "../ports" }
+domain = { path = "../domain" }
+common = { path = "../common" }
+tokio = { version = "1.15.0", features = ["macros", "sync", "rt-multi-thread"] }
+

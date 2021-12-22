@@ -3,6 +3,16 @@
 version = 3
 
 [[package]]
+name = "adaptor"
+version = "0.1.0"
+dependencies = [
+ "common",
+ "domain",
+ "ports",
+ "tokio",
+]
+
+[[package]]
 name = "aho-corasick"
 version = "0.7.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -20,6 +30,14 @@ checksum = "8b26702f315f53b6071259e15dd9d64528213b44d61de1ec926eca7715d62203"
 [[package]]
 name = "app"
 version = "0.1.0"
+dependencies = [
+ "adaptor",
+ "anyhow",
+ "application",
+ "common",
+ "ports",
+ "tokio",
+]
 
 [[package]]
 name = "application"
@@ -77,6 +95,7 @@ name = "domain"
 version = "0.1.0"
 dependencies = [
  "common",
+ "dyn-clone",
  "rstest",
  "thiserror",
 ]
@@ -86,6 +105,12 @@ name = "downcast"
 version = "0.11.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1435fa1053d8b2fbbe9be7e97eca7f33d37b28409959813daefc1446a14247f1"
+
+[[package]]
+name = "dyn-clone"
+version = "1.0.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ee2626afccd7561a06cf1367e2950c4718ea04565e20fb5029b6c7d8ad09abcf"
 
 [[package]]
 name = "either"

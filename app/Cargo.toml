@@ -6,3 +6,9 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+adaptor = { path = "../adaptor" }
+anyhow = "1.0.51"
+application = { path = "../application" }
+common = { path = "../common" }
+ports = { path = "../ports" }
+tokio = { version = "1.15.0", features = ["macros", "rt-multi-thread"] }

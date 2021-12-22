@@ -1,8 +1,9 @@
 [workspace]
 members = [
+  "adaptor",
+  "app",
+  "application",
   "common",
   "domain",
   "ports",
-  "application",
-  "app",
 ]
