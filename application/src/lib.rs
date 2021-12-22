@@ -1,27 +1,27 @@
 mod error;
 
-use common::{async_trait::async_trait, futures::future::ready};
-use domain::models::{AddItem, Item, Task, UserStory};
+use common::async_trait::async_trait;
+use domain::models::{AddItem, Backlog, Item, Task, UserStory};
 pub use error::ApplicationError;
-use mockall::{automock, mock};
-use ports::BacklogRepository;
+use ports::{BacklogRepository, ProvideBacklogRepository};
 
 #[async_trait]
-pub trait BacklogApplication: BacklogRepository {
-    async fn add_item(&self, command: Box<dyn AddItemCmd>) -> Result<(), ApplicationError> {
+pub trait BacklogApplication: ProvideBacklogRepository {
+    async fn add_item(&self, command: Box<dyn AddItemCmd>) -> Result<Backlog, ApplicationError> {
+        let backlog_repo = self.provide();
+
         let item: Box<dyn Item> = match command.item_type() {
             ItemType::Story => Box::new(UserStory::new(command.title())),
             ItemType::Task => Box::new(Task::new(command.title())),
         };
 
-        let mut backlog = self.get().await?.unwrap_or_default();
+        let mut backlog = backlog_repo.get().await?.unwrap_or_default();
         backlog.add_item(item);
-        self.save(backlog).await?;
-        Ok(())
+        backlog_repo.save(backlog.clone()).await?;
+        Ok(backlog)
     }
 }
 
-#[automock]
 pub trait AddItemCmd: Send {
     fn item_type(&self) -> ItemType;
     fn title(&self) -> &str;
@@ -35,9 +35,11 @@ pub enum ItemType {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use domain::models::*;
+    use mockall::*;
     use ports::*;
+
+    use super::*;
 
     mock! {
         Test {}
@@ -46,6 +48,14 @@ mod tests {
         impl BacklogRepository for Test {
             async fn get(&self) -> Result<Option<Backlog>, PortError>;
             async fn save(&self, backlog: Backlog) -> Result<(), PortError>;
+        }
+    }
+
+    impl ProvideBacklogRepository for MockTest {
+        type Repository = MockTest;
+
+        fn provide(&self) -> &Self::Repository {
+            &self
         }
     }
 
