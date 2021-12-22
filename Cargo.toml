@@ -1,0 +1,8 @@
+[workspace]
+members = [
+  "common",
+  "domain",
+  "ports",
+  "application",
+  "app",
+]
